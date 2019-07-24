@@ -2,5 +2,6 @@ flask
 flask_cors
 flask_restful
 flask_restful_swagger_2
-python-magic-bin-0.4.14
 celery
+python-magic
+#if win please change to python-magic-bin

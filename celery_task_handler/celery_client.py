@@ -1,4 +1,5 @@
 from celery import Celery
+from celery.result import allow_join_result
 
 import settings
 from errors import FailedToInsertTaskToCelery
@@ -19,6 +20,7 @@ app.config_from_object(CeleryConfig)
 
 def insert_task_to_mq(image_path):
     try:
-        app.send_task(f'{settings.WORKER_NAME}.service.{settings.MQ_CMD}', args=[image_path])
+        with allow_join_result():
+            return app.send_task('resize_frames_worker.service.resize_videos_frames_report', args=[image_path]).get()
     except Exception:
         raise FailedToInsertTaskToCelery

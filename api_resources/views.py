@@ -52,7 +52,7 @@ class ResizeVideoFramesResource(Resource):
             if 'image' not in filename:
                 os.remove(imgae_path)
                 return ErrorModel(**{'message': 'Not A Valid Image File'}), 400
-            insert_task_to_mq(imgae_path)
+            result = insert_task_to_mq(imgae_path)
         except ValueError as e:
             return ErrorModel(**{'message': e.args[0]}), 400
-        return ResponseModel(**{'message': 'yey'}), 200
+        return result, 200
